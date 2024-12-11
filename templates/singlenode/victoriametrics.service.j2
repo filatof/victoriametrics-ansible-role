@@ -1,0 +1,43 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=VictoriaMetrics service
+After=network.target
+
+[Service]
+Type=simple
+User={{ victoriametrics_user }}
+Group={{ victoriametrics_group }}
+{% if victoriametrics_config_mode == "env" %}
+Environment="httpListenAddr={{ victoriametrics_singlenode_http_listen_addr }}"
+Environment="retentionPeriod={{ victoriametrics_retention_period }}"
+Environment="storageDataPath={{ victoriametrics_storage_data_path }}"
+{% for env, env_value in victoriametrics_envs.items() %}
+Environment="{{ env }}={{ env_value }}"
+{% endfor %}
+ExecStart=/usr/local/bin/victoriametrics -envflag.enable \
+{% for flag, flag_value in victoriametrics_args.items() -%}
+  -{{ flag }}={{ flag_value }} \
+{% endfor %}
+{% endif %}
+
+{% if victoriametrics_config_mode == "args" %}
+ExecStart=/usr/local/bin/victoriametrics \
+  -retentionPeriod={{ victoriametrics_retention_period }} \
+  -storageDataPath={{ victoriametrics_storage_data_path }} \
+{% for flag, flag_value in victoriametrics_args.items() -%}
+  -{{ flag }}={{ flag_value }} \
+{% endfor %}
+  -httpListenAddr={{ victoriametrics_singlenode_http_listen_addr }}
+{% endif %}
+
+SyslogIdentifier=victoriametrics
+Restart=always
+PrivateTmp=yes
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=full
+LimitNOFILE=500000
+LimitNPROC=500000
+
+[Install]
+WantedBy=multi-user.target

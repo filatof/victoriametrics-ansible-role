@@ -1,0 +1,16 @@
+#SPDX-License-Identifier: MIT-0
+---
+victoriametrics_global_config_mode: env
+
+
+victoriametrics_singlenode: false
+victoriametrics_user: victoriametrics
+victoriametrics_group: "{{ victoriametrics_user }}"
+victoriametrics_version: 1.95.1
+victoriametrics_retention_period: 3
+victoriametrics_storage_data_path: /var/lib/victoria-metrics
+victoriametrics_args: {}
+victoriametrics_config_mode: "{{ victoriametrics_global_config_mode }}"
+victoriametrics_envs: {}
+victoriametrics_singlenode_http_listen_addr: :8428
+
