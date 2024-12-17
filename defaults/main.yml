@@ -3,7 +3,7 @@
 victoriametrics_global_config_mode: env
 
 
-victoriametrics_singlenode: false
+victoriametrics_singlenode: true
 victoriametrics_user: victoriametrics
 victoriametrics_group: "{{ victoriametrics_user }}"
 victoriametrics_version: 1.95.1
@@ -13,4 +13,13 @@ victoriametrics_args: {}
 victoriametrics_config_mode: "{{ victoriametrics_global_config_mode }}"
 victoriametrics_envs: {}
 victoriametrics_singlenode_http_listen_addr: :8428
+
+# Claster
+victoriametrics_cluster: false
+victoriametrics_cluster_vminsert: false
+victoriametrics_cluster_vmselect: false
+victoriametrics_cluster_vmstorage: false
+victoriametrics_cluster_user: "{{ victoriametrics_user }}"
+victoriametrics_cluster_group: "{{ victoriametrics_cluster_user }}"
+victoriametrics_cluster_version: "{{ victoriametrics_version }}"
 

@@ -6,6 +6,10 @@
     group: "{{ victoriametrics_user }}"
     mode: "0755"
 
+- name: Set architecture based on ansible_architecture
+  set_fact:
+    victoriametrics_arch: "{{ 'amd64' if 'x86_64' in ansible_architecture else 'arm64' }}"
+
 - name: Download victoriametrics files
   ansible.builtin.get_url:
     url: https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v{{ victoriametrics_cluster_version }}/victoria-metrics-{{ ansible_system | lower }}-{{
@@ -40,6 +44,7 @@
     mode: "0755"
     owner: "{{ victoriametrics_user }}"
     group: "{{ victoriametrics_user }}"
+    remote_src: true
   notify:
     - Restart victoriametrics
 
